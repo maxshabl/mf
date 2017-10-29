@@ -1,0 +1,19 @@
+{
+    "name": "vendor/mirafox",
+    "description": "Mirafox task",
+    "authors": [
+        {
+            "name": "Maxim Shablinski",
+            "email": "m.shablinski@ya.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Abstracts\\": "abstracts/",
+            "Classes\\": "classes/",
+            "Controller\\": "controller/",
+            "Model\\": "model/",
+            "View\\": "view/"
+        }
+    }
+}
