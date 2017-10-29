@@ -14,6 +14,11 @@ class IndexController extends Controller
         $user = new User();
         //$user->logIn('qqqq', 'qqqq');
         $userIdentity = $user->getUserIdentity();
+        if(!empty($userIdentity)){
+            $wallet = new Wallet();
+            $coins = $wallet->getWallet();
+            $userIdentity = array_merge($userIdentity, $coins);
+        }
         return $this->view->render('main', $userIdentity);
 
     }
@@ -36,7 +41,7 @@ class IndexController extends Controller
             $user->addUser(trim($_POST['username']), trim($_POST['password']));
             $user->logIn(trim($_POST['username']), trim($_POST['password']));
             $wallet = new Wallet();
-            $wallet->addWallet($user);
+            $wallet->addWallet();
             $this->view->redirect('/');
         }
         return $this->view->render('registration');
