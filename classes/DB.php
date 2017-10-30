@@ -94,6 +94,7 @@ class DB
     {
         try {
             $this->dbh->commit();
+
         }catch (\Exception $e) {
             $this->dbh->rollBack();
         }

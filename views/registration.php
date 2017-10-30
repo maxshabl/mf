@@ -34,13 +34,13 @@
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
                     <div class="checkbox">
-                        <label><input type="checkbox" checked> Запомнить</label>
+                        <!--<label><input type="checkbox" checked> Запомнить</label>-->
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-primary">Регистрация</button>
                 </div>
             </div>
         </fieldset>

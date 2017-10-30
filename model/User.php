@@ -8,9 +8,14 @@ use Classes\Session;
 class User
 {
 
-    public function addUser($email, $password)
+    /**
+     * добавляет юзера
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
+    public function addUser(string $username, string $password)
     {
-
         $timestamp = time();
         $sql =
         "INSERT INTO 
@@ -18,19 +23,30 @@ class User
         VALUES
           (:username, '', :password, :email, $timestamp, $timestamp)";
         $params = [
-            ':username' => trim($email),
-            ':email' => trim($email),
+            ':username' => trim($username),
+            ':email' => trim($username),
             ':password' => md5($password)
         ];
         DB::getConnection()->beginTransaction()->execute($sql, $params)->commit();
+
+        return true;
     }
 
+    /**
+     * проверка сессии пользователя
+     * @return bool
+     */
     public function isAuth()
     {
         return !is_null(Session::getSessionVar('user'));
     }
 
-
+    /**
+     * добавляет юзера
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
     public function logIn($username, $password)
     {
         $sql = "
@@ -47,6 +63,10 @@ class User
         }
     }
 
+    /**
+     * возвращает сессию пользователя
+     * @return array
+     */
     public function getUserIdentity()
     {
         return Session::getSessionVar('user')??[];

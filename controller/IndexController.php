@@ -9,6 +9,10 @@ use Model\Wallet;
 
 class IndexController extends Controller
 {
+    /**
+     * рендерим главную страницу с информацией о пользователе или предложением зарегистрироваться
+     * @return mixed
+     */
     public function actionIndex()
     {
         $user = new User();
@@ -23,6 +27,10 @@ class IndexController extends Controller
 
     }
 
+    /**
+     * логиним пользователя и редиректим на главную
+     * @return mixed
+     */
     public function actionLogin()
     {
         if(isset($_POST['username']) && isset($_POST['password'])) {
@@ -34,6 +42,11 @@ class IndexController extends Controller
         return $this->view->render('login');
     }
 
+
+    /**
+     * логиним пользователя, даем 10 000 ед. и редиректим на главную
+     * @return mixed
+     */
     public function actionRegistration()
     {
         if(isset($_POST['username']) && isset($_POST['password'])) {
@@ -47,6 +60,10 @@ class IndexController extends Controller
         return $this->view->render('registration');
     }
 
+    /**
+     * удаляем сессию пользователя, редирект на главную
+     * @return mixed
+     */
     public function actionLogout()
     {
         $user = new User();
@@ -54,16 +71,20 @@ class IndexController extends Controller
         $this->view->redirect('/');
     }
 
+    /**
+     * логиним пользователя, даем 10 000 ед. и редиректим на главную
+     * @return mixed
+     */
     public function actionSpend()
     {
+        $wallet = new Wallet();
+        if(isset($_POST['coins'])) {
+            $coins = (float)$_POST['coins'];
+            $wallet->spendMoney($coins);
+        }
 
+        $this->view->redirect('/');
     }
-
-
-
-
-
-
 
 }
 
