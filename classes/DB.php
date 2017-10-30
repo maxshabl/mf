@@ -5,11 +5,14 @@ namespace Classes;
 
 class DB
 {
+
     /**
      * Соединение с базой
      * @var
      */
     private $dbh;
+
+
     /**
      * @var
      */
@@ -49,10 +52,12 @@ class DB
             $this->dbh->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         } catch (\PDOException $e) {
             //$this->dbh->rollBack();
-            print_r($this->dbh->errorInfo());
+            Logger::log($this->dbh->errorInfo(), 'Ошибка подключения');
+            exit();
         }
 
     }
+
 
     /**
      * Запрос.
@@ -65,14 +70,15 @@ class DB
         try {
             $this->sth = $this->dbh->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
             $this->sth->execute($params);
-           // $a = $sth->debugDumpParams(); // записываем в лог параметры запроса
-            //$b = $sth->fetchAll(); // записываем в лог параметры ответа
             return self::$instance;
-        }catch (\Exception $e) {
+        }catch (\PDOException $e) {
+            Logger::log(['error' => $this->dbh->errorInfo(), 'sql' => $sql, 'params' => $params], 'Ошибка запроса');
             $this->dbh->rollBack();
+            exit();
         }
 
     }
+
 
     /**
      * Начало транзакции
@@ -94,11 +100,11 @@ class DB
     {
         try {
             $this->dbh->commit();
-
-        }catch (\Exception $e) {
+        }catch (\PDOException $e) {
+            Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при коммите');
             $this->dbh->rollBack();
+            exit();
         }
-
         return self::$instance;
     }
 
@@ -120,7 +126,14 @@ class DB
     */
     public function fetchAll()
     {
-        return $this->sth->fetchAll(\PDO::FETCH_ASSOC);
+        try {
+            $result = $this->sth->fetchAll(\PDO::FETCH_ASSOC);
+            return $result;
+        }catch (\PDOException $e) {
+            Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при fetchAll');
+            $this->dbh->rollBack();
+        }
+
     }
 
 

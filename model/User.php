@@ -4,6 +4,7 @@ namespace Model;
 
 use Classes\DB;
 use Classes\Session;
+use Classes\Logger;
 
 class User
 {

@@ -6,6 +6,7 @@ namespace Controller;
 use Abstracts\Controller;
 use Model\User;
 use Model\Wallet;
+use Classes\Logger;
 
 class IndexController extends Controller
 {
@@ -23,6 +24,7 @@ class IndexController extends Controller
             $coins = $wallet->getWallet();
             $userIdentity = array_merge($userIdentity, $coins);
         }
+        Logger::log('переменная', 'комментарий');
         return $this->view->render('main', $userIdentity);
 
     }
