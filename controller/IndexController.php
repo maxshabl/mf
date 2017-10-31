@@ -7,6 +7,7 @@ use Abstracts\Controller;
 use Model\User;
 use Model\Wallet;
 use Classes\Logger;
+use Classes\Session;
 
 class IndexController extends Controller
 {
@@ -16,16 +17,15 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        $user = new User();
-        //$user->logIn('qqqq', 'qqqq');
-        $userIdentity = $user->getUserIdentity();
-        if(!empty($userIdentity)){
+        Logger::log('erterte');
+        $userSession = Session::getSessionVar('user')??[];
+        if(!empty($userSession)) {
             $wallet = new Wallet();
             $coins = $wallet->getWallet();
-            $userIdentity = array_merge($userIdentity, $coins);
+            $userSession = array_merge($userSession, $coins);
         }
         Logger::log('переменная', 'комментарий');
-        return $this->view->render('main', $userIdentity);
+        return $this->view->render('main', $userSession);
 
     }
 
@@ -51,7 +51,7 @@ class IndexController extends Controller
      */
     public function actionRegistration()
     {
-        if(isset($_POST['username']) && isset($_POST['password'])) {
+        if(isset($_POST['username']) && isset($_POST['password']) && $_POST['password'] != '') {
             $user = new User();
             $user->addUser(trim($_POST['username']), trim($_POST['password']));
             $user->logIn(trim($_POST['username']), trim($_POST['password']));
@@ -68,8 +68,7 @@ class IndexController extends Controller
      */
     public function actionLogout()
     {
-        $user = new User();
-        $user->logOut();
+        Session::destroy();
         $this->view->redirect('/');
     }
 

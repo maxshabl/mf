@@ -33,14 +33,7 @@ class User
         return true;
     }
 
-    /**
-     * проверка сессии пользователя
-     * @return bool
-     */
-    public function isAuth()
-    {
-        return !is_null(Session::getSessionVar('user'));
-    }
+
 
     /**
      * добавляет юзера
@@ -64,16 +57,5 @@ class User
         }
     }
 
-    /**
-     * возвращает сессию пользователя
-     * @return array
-     */
-    public function getUserIdentity()
-    {
-        return Session::getSessionVar('user')??[];
-    }
-    public function logOut()
-    {
-        Session::destroy();
-    }
+
 }

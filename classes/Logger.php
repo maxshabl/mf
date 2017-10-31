@@ -17,7 +17,8 @@ class Logger
             }
             $result .="\n";
             if(!$path)
-                $path = dirname($_SERVER['SCRIPT_FILENAME']) . '../logs/log.txt';
+                if(!is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/logs')) mkdir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs');
+                $path = dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs/log.txt';
             if($clear)
                 file_put_contents($path, '');
             @error_log($date.$comment.$result, 3, $path);

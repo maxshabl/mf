@@ -4,8 +4,8 @@ namespace Model;
 
 
 use Classes\DB;
+use Classes\Logger;
 use Classes\Session;
-use Model\User;
 
 class Wallet
 {
@@ -22,7 +22,7 @@ class Wallet
      */
     public function __construct()
     {
-        $this->userIdentity = (new User())->getUserIdentity();
+        $this->userIdentity = Session::getSessionVar('user');
     }
 
 
@@ -34,28 +34,50 @@ class Wallet
     {
         $userIdentity = $this->userIdentity;
         if(empty($userIdentity)) return false;
-        $timestamp = time();
+        $money = (float)10000;
+
         $sql =
             "INSERT INTO 
               `wallet` (`user_id`, `coin`, `created_at`, `updated_at`) 
              VALUES
-              (:user_id, 10000,  $timestamp, $timestamp)";
+              (:user_id, :money,  :time1, :time2)";
         $params = [
-            ':user_id' => $userIdentity['id']
+            ':user_id' => $userIdentity['id'],
+            ':money' => $money,
+            ':time1' => time(),
+            ':time2' => time()
+
         ];
-        $sql2 =
+
+        $sql2 = "CREATE TABLE `transactions_{$userIdentity['id']}` (
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `user_id` INT(11) UNSIGNED NOT NULL,
+            `tr_uuid` VARCHAR(40) NOT NULL,
+            `tr_session` VARCHAR(40) NOT NULL,
+            `tr_date` INT(11) NOT NULL,
+            `coin` DECIMAL(20,2)  NOT NULL,
+            `hash` VARCHAR(255) NOT NULL,
+            PRIMARY KEY (`id`),
+            INDEX `FK_user_transactions` (`user_id`),
+            CONSTRAINT `FK_user_{$userIdentity['id']}_transactions` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+        )
+        COLLATE='utf8_general_ci'
+        ENGINE=InnoDB
+        ";
+
+        $sql3 =
             "INSERT INTO 
-              `transactions` (`user_id`, `tr_uuid`, `tr_session`, `tr_date`,`coin`) 
+              `transactions_{$userIdentity['id']}` (`user_id`, `tr_uuid`, `tr_session`, `tr_date`,`coin`) 
              VALUES
               (:user_id, :uuid, :tr_session, :tr_date, :coin)";
-        $params2 = [
-            ':user_id' => trim($userIdentity['id']),
+        $params3 = [
+            ':user_id' => $userIdentity['id'],
             ':uuid' => Session::genUuid(),
             ':tr_session' => Session::getSid(),
             ':tr_date' => time(),
-            ':coin' => 10000
+            ':coin' => 10000,
         ];
-        DB::getConnection()->beginTransaction()->execute($sql, $params)->execute($sql2, $params2)->commit();
+        DB::getConnection()->beginTransaction()->execute($sql, $params)->execute($sql2)->execute($sql3, $params3)->commit();
         return true;
 
     }
@@ -70,20 +92,38 @@ class Wallet
         $userIdentity = $this->userIdentity;
         if(empty($userIdentity)) return false;
 
-        // запрашиваем сумму в кошельке
-        $wallet = $this->getWallet();
         $sql =
+            "SELECT sum(`t`.`coin`) as `tr_coin`, `w`.`user_id`, `w`.`coin` 
+              FROM `wallet` as `w` 
+              INNER JOIN `transactions_{$userIdentity['id']}` as `t` ON `t`.user_id=`w`.`user_id` WHERE `w`.`user_id`=:user_id 
+
+        ";
+        $params = [
+            ':user_id' => $userIdentity['id'],
+        ];
+        $query = DB::getConnection()->beginTransaction()->execute($sql, $params);
+        $data = $query->fetchAll()[0];
+        if($data['tr_coin'] !== $data['coin']) {
+            Logger::log($data, 'Ошибка в данных транзакций.');
+            $query->rollBack();
+            return false;
+        } elseif ($data['coin'] < $coin) {
+            Logger::log($data, 'Попытка списать больше, чем есть на счете!');
+            $query->rollBack();
+            return false;
+        }
+        $sql1 =
             "UPDATE 
               `wallet` SET `coin`=:coin, updated_at=:updated_at 
                WHERE user_id=:user_id";
-        $params = [
+        $params1 = [
             ':user_id' => $userIdentity['id'],
-            ':coin' => $wallet['coin'] - $coin,
+            ':coin' => (float)$data['coin']-$coin,
             ':updated_at' => time(),
         ];
         $sql2 =
             "INSERT INTO 
-              `transactions` (`user_id`, `tr_uuid`, `tr_session`, `tr_date`,`coin`) 
+              `transactions_{$userIdentity['id']}` (`user_id`, `tr_uuid`, `tr_session`, `tr_date`,`coin`) 
                VALUES
               (:user_id, :uuid, :tr_session, :tr_date, :coin)";
         $params2 = [
@@ -94,26 +134,9 @@ class Wallet
             ':coin' => -$coin
 
         ];
-        $sql3 =
-            "SELECT sum(`t`.`coin`) as `tr_coin`, `w`.`user_id`, `w`.`coin` 
-              FROM `wallet` as `w` 
-              INNER JOIN `transactions` as `t` ON `t`.user_id=`w`.`user_id` WHERE `w`.`user_id`=:user_id 
+        $query->execute($sql1, $params1)->execute($sql2, $params2)->commit();
+        return true;
 
-        ";
-
-        $params3 = [
-            ':user_id' => $userIdentity['id'],
-        ];
-
-        $query = DB::getConnection()->beginTransaction()->execute($sql, $params)->execute($sql2, $params2)->execute($sql3, $params3);
-        $coinData = $query->fetchAll()[0];
-        if($coinData['tr_coin'] === $coinData['coin']) {
-            $query->commit();
-            return true;
-        } else {
-            $query->rollBack();
-            return false;
-        }
     }
 
 
@@ -131,6 +154,6 @@ class Wallet
         $params = [
             ':user_id' => trim($this->userIdentity['id'])
         ];
-        return DB::getConnection()->execute($sql, $params)->fetchAll()[0];
+        return DB::getConnection()->execute($sql, $params)->fetchAll()[0]??[];
     }
 }

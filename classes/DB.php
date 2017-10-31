@@ -23,7 +23,7 @@ class DB
      * Экземпляр класса DB
      * @var DB
      */
-    public static $instance;
+    protected static $instance;
 
 
     /**
@@ -65,7 +65,7 @@ class DB
      * @param $params
      * @return self::$instance
      */
-    public function execute($sql, $params)
+    public function execute($sql, $params = null)
     {
         try {
             $this->sth = $this->dbh->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));
@@ -86,7 +86,13 @@ class DB
      */
     public function beginTransaction()
     {
-        $this->dbh->beginTransaction();
+        try {
+            $this->dbh->beginTransaction();
+        }catch (\PDOException $e) {
+            Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка в начале транзакции');
+            exit();
+        }
+
 
         return self::$instance;
     }

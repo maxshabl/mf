@@ -24,8 +24,7 @@ class View
     {
         $config = require (__DIR__.'\..\config\config.php');
         $this->path = $config['layout'];
-        $user = new User;
-        $this->data = $user->getUserIdentity();
+        $this->data = Session::getSessionVar('user')??[];
         $a = [];
 
     }
@@ -43,7 +42,6 @@ class View
             $$k = $v;
         }
         ob_start();
-        session_start();
         include($this->path .  $view . '.php');
         $content = ob_get_contents();
         ob_end_clean();

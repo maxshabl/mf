@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <div class="col-xs-10">
                                 <h3>Добро пожаловать, <?=$username ?></h3>
-                                <p class="lead">На Вашем счете <?=$coin ?> ед.</p>
+                                <p class="lead">На Вашем счете <?=$coin??'произошла ошибка. 0' ?> ед.</p>
                                 <input type="text" name="coins" class="form-control" id="text" placeholder="Введите сумму списания">
                             </div>
                         </div>
@@ -49,8 +49,8 @@
         <?php else:?>
             <div class="jumbotron">
                 <h1>Вы не вошли на сайт!</h1>
-                <p class="lead">Чтобы потратить деньги необходимо войти или зарегистрироваться.
-                    После регистрации Вы получите 10 000 ед. на счет!</p>
+                <p class="lead">Чтобы потратить деньги необходимо войти или зарегистрироваться. </p>
+                <p class="lead">После регистрации Вы получите 10 000 ед. на счет!</p>
                 <!--<p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p> -->
             </div>
         <?php endif;?>
