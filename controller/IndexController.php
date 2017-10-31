@@ -17,7 +17,6 @@ class IndexController extends Controller
      */
     public function actionIndex()
     {
-        Logger::log('erterte');
         $userSession = Session::getSessionVar('user')??[];
         if(!empty($userSession)) {
             $wallet = new Wallet();

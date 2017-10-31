@@ -17,7 +17,7 @@ class Logger
             }
             $result .="\n";
             if(!$path)
-                if(!is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/logs')) mkdir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs');
+                if(!is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs')) mkdir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs');
                 $path = dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs/log.txt';
             if($clear)
                 file_put_contents($path, '');
