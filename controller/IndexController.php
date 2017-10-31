@@ -81,7 +81,7 @@ class IndexController extends Controller
     {
         $wallet = new Wallet();
         if(isset($_POST['coins'])) {
-            $coins = (float)abs($_POST['coins']);
+            $coins = abs(round(((float)$_POST['coins']), 2));
             $wallet->spendMoney($coins);
         }
 
