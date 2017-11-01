@@ -2,11 +2,17 @@
 
 namespace Classes;
 
-
 class Logger
 {
-
-    public static function log($var, $comment = '', $clear=FALSE, $path=NULL)
+    /**
+     * Записывает лог в папку вне проекта
+     * @param mixed $var
+     * @param string $comment
+     * @param bool $clear
+     * @param mixed $path
+     * @return bool
+     */
+    public static function log($var, $comment = '', $clear = false, $path = null)
     {
         if ($var) {
             $date = '====== '.date('Y-m-d H:i:s')." =====\n";
@@ -16,11 +22,15 @@ class Logger
                 $result = print_r($var, 1);
             }
             $result .="\n";
-            if(!$path)
-                if(!is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs')) mkdir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs');
-                $path = dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs/log.txt';
-            if($clear)
+            if (!$path) {
+                if (!is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs')) {
+                    mkdir(dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs');
+                }
+            }
+            $path = dirname($_SERVER['SCRIPT_FILENAME']) . '/../logs/log.txt';
+            if ($clear) {
                 file_put_contents($path, '');
+            }
             @error_log($date.$comment.$result, 3, $path);
             return true;
         }

@@ -2,7 +2,6 @@
 
 namespace Model;
 
-
 use Classes\DB;
 use Classes\Logger;
 use Classes\Session;
@@ -33,7 +32,9 @@ class Wallet
     public function addWallet()
     {
         $userIdentity = $this->userIdentity;
-        if(empty($userIdentity)) return false;
+        if (empty($userIdentity)) {
+            return false;
+        }
         $money = (float)10000;
 
         $sql =
@@ -79,7 +80,6 @@ class Wallet
         ];
         DB::getConnection()->beginTransaction()->execute($sql, $params)->execute($sql2)->execute($sql3, $params3)->commit();
         return true;
-
     }
 
     /**
@@ -90,7 +90,9 @@ class Wallet
     public function spendMoney(float $coin)
     {
         $userIdentity = $this->userIdentity;
-        if(empty($userIdentity)) return false;
+        if (empty($userIdentity)) {
+            return false;
+        }
 
         $sql =
             "SELECT sum(`t`.`coin`) as `tr_coin`, `w`.`user_id`, `w`.`coin` 
@@ -103,7 +105,7 @@ class Wallet
         ];
         $query = DB::getConnection()->beginTransaction()->execute($sql, $params);
         $data = $query->fetchAll()[0];
-        if($data['tr_coin'] !== $data['coin']) {
+        if ($data['tr_coin'] !== $data['coin']) {
             Logger::log($data, 'Ошибка в данных транзакций.');
             $query->rollBack();
             return false;
@@ -136,10 +138,9 @@ class Wallet
         ];
         $query->execute($sql1, $params1)->execute($sql2, $params2)->commit();
         return true;
-
     }
 
-
+    
     /**
      * Получить информацию по кошельку из базы
      * @return array

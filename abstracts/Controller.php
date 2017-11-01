@@ -2,7 +2,6 @@
 
 namespace Abstracts;
 
-
 use Classes\View;
 
 abstract class Controller

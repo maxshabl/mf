@@ -22,11 +22,9 @@ class View
      */
     public function __construct()
     {
-        $config = require (__DIR__.'\..\config\config.php');
+        $config = require(__DIR__.'\..\config\config.php');
         $this->path = $config['layout'];
         $this->data = Session::getSessionVar('user')??[];
-        $a = [];
-
     }
 
     /**
@@ -54,7 +52,6 @@ class View
      */
     public function redirect(string $action)
     {
-        $a = $_SERVER['SERVER_NAME'].$action;
         header('Location:'.$action);
         exit;
     }

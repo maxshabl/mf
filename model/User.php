@@ -51,8 +51,8 @@ class User
             ':username' => trim($username),
             ':password' => md5($password)
         ];
-        $req = DB::getConnection()->execute($sql, $params)->fetchAll()[0];
-        if(isset($req['id'])) {
+        $req = DB::getConnection()->execute($sql, $params)->fetchAll()[0]??[];
+        if (isset($req['id'])) {
             return Session::setSessionVar('user', $req);
         }
     }

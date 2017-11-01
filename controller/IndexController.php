@@ -2,7 +2,6 @@
 
 namespace Controller;
 
-
 use Abstracts\Controller;
 use Model\User;
 use Model\Wallet;
@@ -18,14 +17,13 @@ class IndexController extends Controller
     public function actionIndex()
     {
         $userSession = Session::getSessionVar('user')??[];
-        if(!empty($userSession)) {
+        if (!empty($userSession)) {
             $wallet = new Wallet();
             $coins = $wallet->getWallet();
             $userSession = array_merge($userSession, $coins);
         }
         Logger::log('переменная', 'комментарий');
         return $this->view->render('main', $userSession);
-
     }
 
     /**
@@ -34,7 +32,7 @@ class IndexController extends Controller
      */
     public function actionLogin()
     {
-        if(isset($_POST['username']) && isset($_POST['password'])) {
+        if (isset($_POST['username']) && isset($_POST['password'])) {
             $user = new User();
             $user->logIn(trim($_POST['username']), trim($_POST['password']));
             //$userIdentity = $user->getUserIdentity();
@@ -50,7 +48,7 @@ class IndexController extends Controller
      */
     public function actionRegistration()
     {
-        if(isset($_POST['username']) && isset($_POST['password']) && $_POST['password'] != '') {
+        if (isset($_POST['username']) && isset($_POST['password']) && $_POST['password'] != '') {
             $user = new User();
             $user->addUser(trim($_POST['username']), trim($_POST['password']));
             $user->logIn(trim($_POST['username']), trim($_POST['password']));
@@ -78,7 +76,7 @@ class IndexController extends Controller
     public function actionSpend()
     {
         $wallet = new Wallet();
-        if(isset($_POST['coins'])) {
+        if (isset($_POST['coins'])) {
             $coins = abs(round(((float)$_POST['coins']), 2));
             $wallet->spendMoney($coins);
         }
