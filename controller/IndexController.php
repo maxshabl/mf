@@ -12,7 +12,6 @@ class IndexController extends Controller
 {
     /**
      * рендерим главную страницу с информацией о пользователе или предложением зарегистрироваться
-     * @return mixed
      */
     public function actionIndex()
     {
@@ -22,13 +21,11 @@ class IndexController extends Controller
             $wallet = new Wallet();
             $coins = $wallet->getWallet();
         }
-        Logger::log('переменная', 'комментарий');
         $this->view->render('main', $coins);
     }
 
     /**
      * логиним пользователя и редиректим на главную
-     * @return mixed
      */
     public function actionLogin()
     {
@@ -69,16 +66,14 @@ class IndexController extends Controller
 
     /**
      * логиним пользователя, даем 10 000 ед. и редиректим на главную
-     * @return mixed
      */
     public function actionSpend()
     {
         $wallet = new Wallet();
         if (isset($_POST['coins'])) {
-            $coins = abs(round(((float)$_POST['coins']), 2));
+            $coins = abs(((int)$_POST['coins']));
             $wallet->spendMoney($coins);
         }
-
         $this->view->redirect('/');
     }
 }

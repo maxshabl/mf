@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 01 2017 г., 00:08
+-- Время создания: Ноя 01 2017 г., 22:35
 -- Версия сервера: 10.1.19-MariaDB
 -- Версия PHP: 7.0.14
 
@@ -26,15 +26,14 @@ SET time_zone = "+00:00";
 -- Структура таблицы `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user` (
+  `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(255) NOT NULL,
   `auth_key` varchar(32) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
   `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -43,16 +42,45 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Структура таблицы `wallet`
 --
 
-CREATE TABLE IF NOT EXISTS `wallet` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `wallet` (
+  `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
-  `coin` decimal(20,2) UNSIGNED NOT NULL,
+  `coin` bigint(20) NOT NULL,
   `created_at` int(11) UNSIGNED NOT NULL,
-  `updated_at` int(11) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`)
+  `updated_at` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `wallet`
+--
+ALTER TABLE `wallet`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT для таблицы `wallet`
+--
+ALTER TABLE `wallet`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --

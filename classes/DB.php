@@ -58,7 +58,6 @@ class DB
         } catch (\PDOException $e) {
             //$this->dbh->rollBack();
             Logger::log($this->dbh->errorInfo(), 'Ошибка подключения');
-            exit();
         }
     }
 
@@ -67,7 +66,7 @@ class DB
      * Запрос.
      * @param string $sql
      * @param array|null $params
-     * @return self::$instance
+     * @return bool|self::$instance
      */
     public function execute(string $sql, $params = null)
     {
@@ -78,7 +77,7 @@ class DB
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo(), 'sql' => $sql, 'params' => $params], 'Ошибка запроса');
             $this->dbh->rollBack();
-            exit();
+            return false;
         }
     }
 
@@ -93,10 +92,7 @@ class DB
             $this->dbh->beginTransaction();
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка в начале транзакции');
-            exit();
         }
-
-
         return self::$instance;
     }
 
@@ -112,7 +108,6 @@ class DB
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при коммите');
             $this->dbh->rollBack();
-            exit();
         }
         return self::$instance;
     }
@@ -131,7 +126,7 @@ class DB
 
     /**
      * получить разультат запроса
-     * @return array
+     * @return bool|array
     */
     public function fetchAll()
     {
@@ -141,7 +136,7 @@ class DB
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при fetchAll');
             $this->dbh->rollBack();
-            exit();
+            return false;
         }
     }
 

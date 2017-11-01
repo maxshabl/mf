@@ -35,7 +35,7 @@ class Wallet
         if (empty($userIdentity)) {
             return false;
         }
-        $money = (float)10000;
+        $money = (int)10000;
 
         $sql =
             "INSERT INTO 
@@ -56,7 +56,7 @@ class Wallet
             `tr_uuid` VARCHAR(40) NOT NULL,
             `tr_session` VARCHAR(40) NOT NULL,
             `tr_date` INT(11) NOT NULL,
-            `coin` DECIMAL(20,2)  NOT NULL,
+            `coin` BIGINT(20) NOT NULL,
             `hash` VARCHAR(255) NOT NULL,
             PRIMARY KEY (`id`),
             INDEX `FK_user_transactions` (`user_id`),
@@ -93,24 +93,22 @@ class Wallet
         if (empty($userIdentity)) {
             return false;
         }
-
         $sql =
-            "SELECT sum(`t`.`coin`) as `tr_coin`, `w`.`user_id`, `w`.`coin` 
+            "SELECT `w`.`user_id`, `w`.`coin`
               FROM `wallet` as `w` 
-              INNER JOIN `transactions_{$userIdentity['id']}` as `t` ON `t`.user_id=`w`.`user_id` WHERE `w`.`user_id`=:user_id 
-
+              WHERE `w`.`user_id`=:user_id 
         ";
         $params = [
             ':user_id' => $userIdentity['id'],
         ];
         $query = DB::getConnection()->beginTransaction()->execute($sql, $params);
         $data = $query->fetchAll()[0];
-        if ($data['tr_coin'] !== $data['coin']) {
-            Logger::log($data, 'Ошибка в данных транзакций.');
+        if ((int)$data['coin'] === 0) {
+            Logger::log($data, 'Недостаточно средств.');
             $query->rollBack();
             return false;
-        } elseif ($data['coin'] < $coin) {
-            Logger::log($data, 'Попытка списать больше, чем есть на счете!');
+        } elseif ((int)$data['coin'] < $coin) {
+            Logger::log($data, 'Попытка списать больше, чем есть на счете.');
             $query->rollBack();
             return false;
         }
