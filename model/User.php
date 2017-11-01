@@ -4,7 +4,6 @@ namespace Model;
 
 use Classes\DB;
 use Classes\Session;
-use Classes\Logger;
 
 class User
 {
@@ -39,9 +38,9 @@ class User
      * добавляет юзера
      * @param string $username
      * @param string $password
-     * @return bool
+     * @return array
      */
-    public function logIn($username, $password)
+    public function logIn(string $username, string $password)
     {
         $sql = "
             SELECT `id`, `username`, `auth_key`, `password_hash`, `email`, `created_at`, `updated_at` FROM `user` 
@@ -55,7 +54,6 @@ class User
         if (isset($req['id'])) {
             return Session::setSessionVar('user', $req);
         }
+        return [];
     }
-
-
 }

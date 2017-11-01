@@ -2,8 +2,6 @@
 
 namespace Classes;
 
-use Model\User;
-
 class View
 {
 

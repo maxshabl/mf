@@ -17,13 +17,13 @@ class IndexController extends Controller
     public function actionIndex()
     {
         $userSession = Session::getSessionVar('user')??[];
+        $coins = [];
         if (!empty($userSession)) {
             $wallet = new Wallet();
             $coins = $wallet->getWallet();
-            $userSession = array_merge($userSession, $coins);
         }
         Logger::log('переменная', 'комментарий');
-        return $this->view->render('main', $userSession);
+        return $this->view->render('main', $coins);
     }
 
     /**
@@ -83,6 +83,4 @@ class IndexController extends Controller
 
         $this->view->redirect('/');
     }
-
 }
-

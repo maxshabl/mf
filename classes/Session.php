@@ -8,7 +8,7 @@ class Session
     /**
      * @param $key
      * @param $val
-     * @return mixed
+     * @return array
     */
     public static function setSessionVar($key, $val)
     {
@@ -79,5 +79,4 @@ class Session
             mt_rand(0, 0xffff)
         );
     }
-
 }
