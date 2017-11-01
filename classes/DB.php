@@ -65,11 +65,11 @@ class DB
 
     /**
      * Запрос.
-     * @param $sql
-     * @param $params
+     * @param string $sql
+     * @param array|null $params
      * @return self::$instance
      */
-    public function execute($sql, $params = null)
+    public function execute(string $sql, $params = null)
     {
         try {
             $this->sth = $this->dbh->prepare($sql, array(\PDO::ATTR_CURSOR => \PDO::CURSOR_FWDONLY));

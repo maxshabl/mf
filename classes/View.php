@@ -17,6 +17,7 @@ class View
     protected $data;
 
     /**
+     * получаем значения из конфигурации
      */
     public function __construct()
     {
@@ -29,7 +30,6 @@ class View
      * Рендерит представление и передает в него переменные
      * @param mixed $view
      * @param mixed $params
-     * @return string
      */
     public function render($view, $params = [])
     {

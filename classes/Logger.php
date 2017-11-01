@@ -9,7 +9,7 @@ class Logger
      * @param mixed $var
      * @param string $comment
      * @param bool $clear
-     * @param mixed $path
+     * @param string|null $path
      * @return bool
      */
     public static function log($var, $comment = '', $clear = false, $path = null)

@@ -25,7 +25,7 @@ class Session
 
     /**
      * @param $key
-     * @return mixed
+     * @return array|null
      */
     public static function getSessionVar($key)
     {
