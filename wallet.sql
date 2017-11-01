@@ -45,7 +45,7 @@ CREATE TABLE `user` (
 CREATE TABLE `wallet` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
-  `coin` bigint(20) NOT NULL,
+  `coin` bigint(20) UNSIGNED NOT NULL,
   `created_at` int(11) UNSIGNED NOT NULL,
   `updated_at` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
