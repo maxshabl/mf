@@ -20,7 +20,7 @@
         <form class="form-horizontal" action="/index/login?XDEBUG_SESSION_START=PHPSTORM" method="POST">
             <fieldset >
                 <div class="form-group">
-                    <label for="username" class="control-label col-xs-2">Email</label>
+                    <label for="username" class="control-label col-xs-2">Username</label>
                     <div class="col-xs-10">
                         <input type="username" name="username" class="form-control" id="inputEmail" placeholder="Username">
                     </div>
