@@ -1,19 +1,17 @@
 {
-    "name": "vendor/mirafox",
-    "description": "Mirafox task",
+    "name": "vendor/mf",
+    "description": "Test task",
     "authors": [
         {
             "name": "Maxim Shablinski",
-            "email": "m.shablinski@ya.ru"
+            "email": "maxshabl@ya.ru"
         }
     ],
+    "require": {},
     "autoload": {
         "psr-4": {
-            "Abstracts\\": "abstracts/",
-            "Classes\\": "classes/",
-            "Controller\\": "controller/",
-            "Model\\": "model/",
-            "View\\": "view/"
+            "Engine\\": "engine",
+            "Frontend\\": "frontend"
         }
     }
 }
