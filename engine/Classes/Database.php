@@ -9,6 +9,10 @@ namespace Engine\Classes;
  * Class Database
  * @package Engine\Classes
  */
+/**
+ * Class Database
+ * @package Engine\Classes
+ */
 class Database
 {
 
@@ -88,7 +92,9 @@ class Database
     }
 
 
-
+    /**
+     * @return bool|Database
+     */
     public function beginTransaction()
     {
         try {
@@ -101,7 +107,9 @@ class Database
     }
 
 
-
+    /**
+     * @return bool
+     */
     public function commit()
     {
         try {
@@ -114,6 +122,9 @@ class Database
     }
 
 
+    /**
+     * @return bool
+     */
     public function rollBack()
     {
         $this->dbh->rollBack();
@@ -121,7 +132,9 @@ class Database
     }
 
 
-
+    /**
+     * @return bool
+     */
     public function fetchAll()
     {
         try {

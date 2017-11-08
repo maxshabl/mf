@@ -6,12 +6,21 @@ use Engine\Abstracts\AbstractService;
 use Engine\Classes\View;
 use Engine\Interfaces\Service;
 
+/**
+ * Class ViewService
+ */
 class ViewService extends AbstractService implements Service
 {
 
+    /**
+     * @var string
+     */
     public $serviceName = 'view';
 
 
+    /**
+     *
+     */
     public function init()
     {
         $layout = include CONF_DIR . 'config.php';

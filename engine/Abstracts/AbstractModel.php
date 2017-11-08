@@ -4,10 +4,20 @@ namespace Engine\Abstracts;
 
 use Engine\Classes\DI;
 
+/**
+ * Class AbstractModel
+ */
 abstract class AbstractModel
 {
+    /**
+     * @var \Engine\Interfaces\Service|null
+     */
     protected $db;
 
+    /**
+     * @var mixed
+     */
+    protected $sql;
     /**
      * @param $di
      */

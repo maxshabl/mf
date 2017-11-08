@@ -44,8 +44,4 @@ class Common
         return $pathUrl;
     }
 
-
-
-
-
 }
