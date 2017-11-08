@@ -13,7 +13,7 @@ abstract class AbstractModel
      */
     public function __construct(DI $di)
     {
-        $this->db = $this->di->get('db');
+        $this->db = $di->get('db');
+        $this->sql = require BASE_DIR . 'sql' . DIRECTORY_SEPARATOR . 'sql.php';
     }
 }
-

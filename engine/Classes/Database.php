@@ -5,6 +5,10 @@ namespace Engine\Classes;
 /**
  * Class Database
  */
+/**
+ * Class Database
+ * @package Engine\Classes
+ */
 class Database
 {
 
@@ -79,58 +83,45 @@ class Database
             return self::$instance;
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo(), 'sql' => $sql, 'params' => $params], 'Ошибка запроса');
-            $this->dbh->rollBack();
-            return false;
+            return $this->dbh->rollBack();
         }
     }
 
 
-    /**
-     * Начало транзакции
-     * @return self::$instance
-     */
+
     public function beginTransaction()
     {
         try {
             $this->dbh->beginTransaction();
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка в начале транзакции');
+            return false;
         }
         return self::$instance;
     }
 
 
-    /**
-     * Коммит
-     * @return self::$instance
-     */
+
     public function commit()
     {
         try {
             $this->dbh->commit();
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при коммите');
-            $this->dbh->rollBack();
+            return $this->dbh->rollBack();
         }
-        return self::$instance;
+        return true;
     }
 
-    /**
-     * Откат транзакции
-     * @return self::$instance
-     */
+
     public function rollBack()
     {
         $this->dbh->rollBack();
-
-        return self::$instance;
+        return false;
     }
 
 
-    /**
-     * получить разультат запроса
-     * @return bool|array
-     */
+
     public function fetchAll()
     {
         try {
@@ -138,8 +129,7 @@ class Database
             return $result;
         } catch (\PDOException $e) {
             Logger::log(['error' => $this->dbh->errorInfo()], 'Ошибка при fetchAll');
-            $this->dbh->rollBack();
-            return false;
+            return $this->dbh->rollBack();
         }
     }
 
