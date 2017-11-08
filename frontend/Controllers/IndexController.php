@@ -15,10 +15,11 @@ class IndexController extends AbstractController
 
     public function index()
     {
-        if ((new User($this->di))->addUser('username', 'password')) {
-            (new Wallet())->addWallet(1);
-        }
 
+        /*if ((new User($this->di))->addUser('username', 'password')) {
+           // (new Wallet())->addWallet(1);
+        }*/
+        $this->view->render('main');
         echo 'Index Page';
     }
 }
