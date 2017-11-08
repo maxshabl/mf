@@ -7,46 +7,86 @@ use Engine\Classes\Session;
 use Frontend\Models\User;
 use Frontend\Models\Wallet;
 
+/**
+ * Class IndexController
+ */
 class IndexController extends AbstractController
 {
+    /**
+     *
+     */
     public function page404()
     {
         echo '404 Page';
     }
 
+    /**
+     * @return mixed
+     */
     public function index()
     {
-
-        /*if ((new User($this->di))->addUser('username', 'password')) {
-           // (new Wallet())->addWallet(1);
-        }*/
-        $this->view->render('main');
-        echo 'Index Page';
+        $wallet = new Wallet($this->di);
+        $wallet->spendMoney(['id' => 16], 8);
+        $userSession = Session::getSessionVar('user');
+        if (!empty($userSession)) {
+            $wallet = new Wallet($this->di);
+            $walletData = $wallet->getWallet(Session::getSessionVar('user'));
+            return $this->view->render('main', $walletData);
+        }
+        return $this->view->render('main');
     }
 
+    /**
+     * @return mixed
+     */
     public function login()
     {
-        $user = new User($this->di);
-        if (isset($_POST['username']) && isset($_POST['password'])) {
+        if (isset($_POST['username']) && isset($_POST['password'])
+                && $_POST['username'] != '' && $_POST['password'] != '') {
+            $user = new User($this->di);
             $user->login($_POST['username'], $_POST['password']);
+            $this->view->redirect('/');
         }
-        $this->view->render('main', $user);
+        return $this->view->render('login');
     }
 
+    /**
+     * @return mixed
+     */
     public function registration()
     {
-        $user = new User($this->di);
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            if ((new User($this->di))->addUser('username', 'password')) {
+        if (isset($_POST['username']) && isset($_POST['password'])
+            && $_POST['username'] != '' && $_POST['password'] != '') {
+            $user = new User($this->di);
+            if ($user->addUser($_POST['username'], $_POST['password'])) {
                 $user->login($_POST['username'], $_POST['password']);
-                $this->view->redirect('/');
+                (new Wallet($this->di))->addWallet();
+                return $this->view->redirect('/');
             }
         }
-        $this->view->render('registration');
+        return $this->view->render('registration');
     }
 
+    /**
+     * @return mixed
+     */
     public function logout()
     {
         Session::destroy();
+        return $this->view->redirect('/');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function spend()
+    {
+        $userSession = Session::getSessionVar('user');
+        if (!empty($userSession) && isset($_POST['coins'])) {
+            $coin = abs(((int)$_POST['coins']));
+            $wallet = new Wallet($this->di);
+            $wallet->spendMoney($userSession, $coin);
+        }
+        return $this->view->redirect('/');
     }
 }

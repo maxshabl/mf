@@ -134,10 +134,4 @@ class Database
     }
 
 
-    /**
-     * Запрещаем клонирование
-     */
-    private function __clone()
-    {
-    }
 }

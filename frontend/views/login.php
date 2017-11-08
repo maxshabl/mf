@@ -17,7 +17,7 @@
             <h3 class="text-muted">Вход</h3>
         </div>
 
-        <form class="form-horizontal" action="/index/login?XDEBUG_SESSION_START=PHPSTORM" method="POST">
+        <form class="form-horizontal" action="/index/login" method="POST">
             <fieldset >
                 <div class="form-group">
                     <label for="username" class="control-label col-xs-2">Username</label>

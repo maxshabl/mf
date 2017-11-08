@@ -46,7 +46,7 @@ class User extends AbstractModel
             ':password' => trim($password)
         ];
         $response = $this->db->execute($req, $params)->fetchAll()[0];
-        if (isset($req['id'])) {
+        if (isset($response['id'])) {
             return Session::setSessionVar('user', $response);
         }
         return $response;

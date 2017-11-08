@@ -1,0 +1,162 @@
+====== 2017-11-08 20:51:47 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 00000
+            [1] => 
+            [2] => 
+        )
+
+    [sql] => INSERT INTO 
+          `user` (`username`, `auth_key`, `password_hash`, `email`, `created_at`, `updated_at`) 
+        VALUES
+          (:username, "", :password, :email, :timest1, :timest2)
+    [params] => Array
+        (
+            [:user_id] => 
+            [:uuid] => 6694480f-61a5-41a9-b8c1-b797f722b1a4
+            [:tr_session] => 7eglr6dc6lopn5vedegs34tqskb6c60g
+            [:tr_date] => 1510163507
+            [:coin] => 10000
+        )
+
+)
+
+====== 2017-11-08 20:53:17 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 00000
+            [1] => 
+            [2] => 
+        )
+
+    [sql] => INSERT INTO 
+              `transactions` (`user_id`, `tr_uuid`, `tr_session`, `tr_date`,`coin`) 
+             VALUES
+              (:user_id, :uuid, :tr_session, :tr_date, :coin)
+    [params] => Array
+        (
+            [:user_id] => 
+            [:uuid] => ca9d223b-9b8d-4baa-a7a2-201c6846ce03
+            [:tr_session] => 7eglr6dc6lopn5vedegs34tqskb6c60g
+            [:tr_date] => 1510163597
+            [:coin] => 10000
+        )
+
+)
+
+====== 2017-11-08 21:26:35 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 42S22
+            [1] => 1054
+            [2] => Unknown column 'user_id=?' in 'where clause'
+        )
+
+    [sql] => SELECT `id` as `wallet_id`, `user_id`, `coin`, `created_at`, `updated_at` FROM `wallet` WHERE `user_id=:user_id`
+    [params] => Array
+        (
+            [:user_id] => 
+        )
+
+)
+
+====== 2017-11-08 21:27:06 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 42S22
+            [1] => 1054
+            [2] => Unknown column 'user_id=?' in 'where clause'
+        )
+
+    [sql] => SELECT `id` as `wallet_id`, `user_id`, `coin`, `created_at`, `updated_at` FROM `wallet` WHERE `user_id=:user_id`
+    [params] => Array
+        (
+            [:user_id] => 
+        )
+
+)
+
+====== 2017-11-08 21:27:29 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 42S22
+            [1] => 1054
+            [2] => Unknown column 'user_id=?' in 'where clause'
+        )
+
+    [sql] => SELECT `id` as `wallet_id`, `user_id`, `coin`, `created_at`, `updated_at` FROM `wallet` WHERE `user_id=:user_id`
+    [params] => Array
+        (
+            [:user_id] => 16
+        )
+
+)
+
+====== 2017-11-08 21:27:31 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 42S22
+            [1] => 1054
+            [2] => Unknown column 'user_id=?' in 'where clause'
+        )
+
+    [sql] => SELECT `id` as `wallet_id`, `user_id`, `coin`, `created_at`, `updated_at` FROM `wallet` WHERE `user_id=:user_id`
+    [params] => Array
+        (
+            [:user_id] => 16
+        )
+
+)
+
+====== 2017-11-08 21:27:33 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 42S22
+            [1] => 1054
+            [2] => Unknown column 'user_id=?' in 'where clause'
+        )
+
+    [sql] => SELECT `id` as `wallet_id`, `user_id`, `coin`, `created_at`, `updated_at` FROM `wallet` WHERE `user_id=:user_id`
+    [params] => Array
+        (
+            [:user_id] => 16
+        )
+
+)
+
+====== 2017-11-08 21:40:35 =====
+Ошибка запроса
+Array
+(
+    [error] => Array
+        (
+            [0] => 00000
+            [1] => 
+            [2] => 
+        )
+
+    [sql] => SELECT `wallet`.`coin` FROM `wallet` WHERE `wallet`.`user_id` = :user_id AND `wallet`.`coin` > 0 FOR UPDATE
+    [params] => 
+)
+
